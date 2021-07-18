@@ -1,4 +1,5 @@
 import React from 'react';
+import { useRouter } from 'next/router';
 
 // const posts = [
 //   {
@@ -721,6 +722,13 @@ import React from 'react';
 
 export default function Post({ postData }) {
 //  const postData = getPostDataById(id);
+  const router = useRouter()
+
+  // If the page is not yet generated, this will be displayed
+  // initially until getStaticProps() finishes running
+  if (router.isFallback) {
+    return <div>Loading...</div>
+  }
 
   return (
     <div>
@@ -736,8 +744,38 @@ export default function Post({ postData }) {
 //   return { id };
 // };
 
-export async function getServerSideProps({ query }){
-  let {id} = query;
+
+export async function getStaticPaths() {
+  // Call an external API endpoint to get posts
+  // const res = await fetch('https://.../posts')
+  // const posts = await res.json()
+
+  // Get the paths we want to pre-render based on posts
+  // const paths = posts.map((post) => ({
+  //   params: { id: post.id },
+  // }))
+
+  const paths = ["/posts/1","/posts/2"];
+
+  // We'll pre-render only these paths at build time.
+  // { fallback: false } means other routes should 404.
+  return { paths, fallback: true }
+}
+
+// export async function getServerSideProps({ query }){
+//   let {id} = query;
+//   const res = await fetch('https://jsonplaceholder.typicode.com/posts/'+id);
+//   const postData = await res.json();
+
+//   return {
+//     props: {
+//       postData,
+//     }
+//   }
+// } 
+
+export async function getStaticProps({query, params}){
+  let { id } = query || params
   const res = await fetch('https://jsonplaceholder.typicode.com/posts/'+id);
   const postData = await res.json();
 
