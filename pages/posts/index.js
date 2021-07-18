@@ -620,18 +620,7 @@ export default function Posts({posts}){
     );
 }
 
-// export async function getStaticProps(){
-//   const res = await fetch('https://jsonplaceholder.typicode.com/posts');
-//   const posts = await res.json();
-
-//   return {
-//     props: {
-//       posts,
-//     }
-//   }
-// } 
-
-export async function getServerSideProps(){
+export async function getStaticProps(){
   const res = await fetch('https://jsonplaceholder.typicode.com/posts');
   const posts = await res.json();
 
@@ -641,3 +630,14 @@ export async function getServerSideProps(){
     }
   }
 } 
+
+// export async function getServerSideProps(){
+//   const res = await fetch('https://jsonplaceholder.typicode.com/posts');
+//   const posts = await res.json();
+
+//   return {
+//     props: {
+//       posts,
+//     }
+//   }
+// } 
